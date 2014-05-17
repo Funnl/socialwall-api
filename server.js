@@ -32,7 +32,7 @@ function handler (req, res) {
 		}
 		else
 		{
-			res.setEncoding('utf8');
+			//res.setEncoding('utf8');
 			  res.on('data', function (chunk) {
 			    console.log('BODY: ' + chunk);
 			    console.log("Sending update to everyone");
