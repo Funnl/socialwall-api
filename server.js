@@ -58,6 +58,7 @@ io.sockets.on('connection', function (socket) {
 	var now = moment();
 	if(!instagram_past_search || now.subtract('minutes', 30).isAfter(lastSearch))
 	{
+		console.log("New client... searching for existing photos");
 		request('https://api.instagram.com/v1/tags/angelhacktest/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122', function (error, response, body) {
 		  if (!error && response.statusCode == 200) {
 		  	instagram_past_search = body;
@@ -72,6 +73,7 @@ io.sockets.on('connection', function (socket) {
 	}
 	else
 	{
+		console.log("New client... using cache of existing photos");
 		socket.emit('instagram', instagram_past_search);
 	}
 
