@@ -5,7 +5,8 @@
 <body>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io.connect('http://localhost');
+  var socket = io.connect('http://socialwall-api.funnl.co');
+  //var socket = io.connect('http://localhost');
   socket.on('news', function (data) {
   	console.log("Got news");
     console.log(data);

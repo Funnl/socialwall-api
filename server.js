@@ -1,20 +1,51 @@
 var app = require('http').createServer(handler)
   , io = require('socket.io').listen(app)
-  , fs = require('fs')
+  , fs = require('fs');
+
+var url = require('url');
 
 app.listen(8080);
 
 function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
+	var u = url.parse(req.url, true);
+	var utest = u.pathname.toString();
+	console.log("Pathname = '" + utest + "'");
+	console.log("Equals1 = '" + (utest == "/") + "'");
 
-    res.writeHead(200);
-    res.end(data);
-  });
+	if(utest == "/"){
+		console.log("Serving index file");
+		fs.readFile(__dirname + '/index.html',
+		  function (err, data) {
+		    if (err) {
+		      res.writeHead(500);
+		      return res.end('Error loading index.html');
+		    }
+
+		    res.writeHead(200);
+		    res.end(data);
+		  });
+	} else if (utest == '/instagram')
+	{
+		if(u.query && u.query["hub.mode"])
+		{
+			res.end(u.query["hub.challenge"]);
+		}
+		else
+		{
+			res.setEncoding('utf8');
+			  res.on('data', function (chunk) {
+			    console.log('BODY: ' + chunk);
+			    console.log("Sending update to everyone");
+			    io.sockets.emit('instragram', chunk);
+			    res.end("Got instagram");
+			  });
+		}
+		
+	}
+	else
+	{
+		console.log("Ignoring other requests");
+	}
 }
 
 io.sockets.on('connection', function (socket) {
@@ -22,7 +53,7 @@ io.sockets.on('connection', function (socket) {
 	request('http://www.google.com', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
 	    //console.log(body) // Print the google web page.
-		socket.emit('listing', {data: body});    
+		//socket.emit('listing', {data: body});    
 	  }
 	  else
 	  {
@@ -32,7 +63,7 @@ io.sockets.on('connection', function (socket) {
 
   socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
-    console.log(data);
+    //console.log(data);
   });
 });
 
