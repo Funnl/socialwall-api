@@ -37,7 +37,7 @@ function handler (req, res) {
 			req.on('data', function (chunk) {
 				console.log('BODY: ' + chunk);
 				console.log("Sending update to everyone");
-				io.sockets.emit('instragram', chunk);
+				io.sockets.emit('instagram', chunk);
 				res.end("Got instagram data and sent to all clients");
 			});
 		}

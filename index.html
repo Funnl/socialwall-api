@@ -16,6 +16,10 @@
   	console.log("Got listing");
   	document.body.innerHTML = data.data;
   });
+  socket.on('instagram', function(data){
+  	console.log("Got instagram update");
+  	console.log(data);
+  })
 
 </script>
 </body>
