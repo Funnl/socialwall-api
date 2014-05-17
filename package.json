@@ -1,0 +1,12 @@
+{
+  "name": "SocialWallAPI",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "bluebird": "1.2.x",
+    "request": "2.27.x",
+    "moment" : "2.4.x",
+    "lodash": "2.2.x"
+  }
+}
