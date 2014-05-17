@@ -2,6 +2,8 @@ var app = require('http').createServer(handler)
   , io = require('socket.io').listen(app)
   , fs = require('fs');
 
+var moment = require('moment');
+
 var url = require('url');
 
 app.listen(8080);
@@ -32,7 +34,6 @@ function handler (req, res) {
 		}
 		else
 		{
-			//res.setEncoding('utf8');
 			console.log("Waiting for data to process the instagram post");
 			req.on('data', function (chunk) {
 				console.log('BODY: ' + chunk.toString());
@@ -49,23 +50,36 @@ function handler (req, res) {
 	}
 }
 
-io.sockets.on('connection', function (socket) {
-	console.log("Making request");
-	request('http://www.google.com', function (error, response, body) {
-	  if (!error && response.statusCode == 200) {
-	    //console.log(body) // Print the google web page.
-		//socket.emit('listing', {data: body});    
-	  }
-	  else
-	  {
-	  	socket.emit('news', error);
-	  }
-	});
+var instagram_past_search = null;
+var lastSearch = moment().subtract('days', 1);
 
-  socket.emit('news', { hello: 'world' });
+io.sockets.on('connection', function (socket) {
+	console.log("Making Instagram search Request");
+	var now = moment();
+	if(!instagram_past_search || now.subtract('minutes', 30).isAfter(lastSearch))
+	{
+		request('https://api.instagram.com/v1/tags/angelhacktest/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122', function (error, response, body) {
+		  if (!error && response.statusCode == 200) {
+		  	instagram_past_search = body;
+		  	lastSearch = moment();
+			socket.emit('instagram', body);    
+		  }
+		  else
+		  {
+		  	socket.emit('error-log', error);
+		  }
+		});
+	}
+	else
+	{
+		socket.emit('instagram', instagram_past_search);
+	}
+
+	/*
   socket.on('my other event', function (data) {
     //console.log(data);
   });
+*/
 });
 
 var request = require('request');
