@@ -33,12 +33,13 @@ function handler (req, res) {
 		else
 		{
 			//res.setEncoding('utf8');
-			  res.on('data', function (chunk) {
-			    console.log('BODY: ' + chunk);
-			    console.log("Sending update to everyone");
-			    io.sockets.emit('instragram', chunk);
-			    res.end("Got instagram");
-			  });
+			console.log("Waiting for data to process the instagram post");
+			res.on('data', function (chunk) {
+				console.log('BODY: ' + chunk);
+				console.log("Sending update to everyone");
+				io.sockets.emit('instragram', chunk);
+				res.end("Got instagram data and sent to all clients");
+			});
 		}
 		
 	}
