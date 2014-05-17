@@ -1,11 +1,39 @@
-var	express		= require('express');
+var app = require('http').createServer(handler)
+  , io = require('socket.io').listen(app)
+  , fs = require('fs')
 
-var socialWallApp = express();
+app.listen(8080);
 
-socialWallApp.get('/', function(req, res){
-	res.end("Social Wall Server is working");
+function handler (req, res) {
+  fs.readFile(__dirname + '/index.html',
+  function (err, data) {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+
+    res.writeHead(200);
+    res.end(data);
+  });
+}
+
+io.sockets.on('connection', function (socket) {
+	console.log("Making request");
+	request('http://www.google.com', function (error, response, body) {
+	  if (!error && response.statusCode == 200) {
+	    //console.log(body) // Print the google web page.
+		socket.emit('listing', {data: body});    
+	  }
+	  else
+	  {
+	  	socket.emit('news', error);
+	  }
+	});
+
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
 });
 
-socialWallApp.listen(8080);
-
-console.log("Server listening on 8080");
+var request = require('request');

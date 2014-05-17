@@ -1,0 +1,21 @@
+<html>
+<head>
+
+</head>
+<body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost');
+  socket.on('news', function (data) {
+  	console.log("Got news");
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+  socket.on('listing', function(data){
+  	console.log("Got listing");
+  	document.body.innerHTML = data.data;
+  });
+
+</script>
+</body>
+</html>
