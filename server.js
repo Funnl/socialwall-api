@@ -9,6 +9,26 @@ var tagsearch = 'https://api.instagram.com/v1/tags/angelhacktest/media/recent?cl
 
 app.listen(8080);
 
+var Stream = require('user-stream');
+var stream = new Stream({
+    consumer_key: 'bTVA9hrjxVEQ1on14lhUdjIKk',
+    consumer_secret: 'xKCWoEGoBqWzUtX6kHv5LOI99f4BhUaCUpPgNv4r1G6UjE7ovx',
+    access_token_key: '2495773801-qSTk9wtEO8H3I4fd9Lw2kICXwocPbeHvO7y1RxK',
+    access_token_secret: 'xP6PeNoCcEft1sGVytIkq8JZC0OxMAuDwT7TT39ghfP1k'
+});
+
+var params = {
+    track: "angelhacktest"
+};
+
+stream.stream(params);
+
+
+stream.on('data', function(json) {
+	console.log("Got twitter updates");
+	io.sockets.emit('twitter', json);
+});
+
 function handler (req, res) {
 	var u = url.parse(req.url, true);
 	var utest = u.pathname.toString();

@@ -8,6 +8,7 @@
     "request": "2.27.x",
     "moment" : "2.4.x",
     "lodash": "2.2.x",
-    "socket.io": "0.9.x"
+    "socket.io": "0.9.x",
+    "user-stream" : "0.0.x"
   }
 }
