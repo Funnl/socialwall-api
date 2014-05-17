@@ -35,9 +35,9 @@ function handler (req, res) {
 			//res.setEncoding('utf8');
 			console.log("Waiting for data to process the instagram post");
 			req.on('data', function (chunk) {
-				console.log('BODY: ' + chunk);
+				console.log('BODY: ' + chunk.toString());
 				console.log("Sending update to everyone");
-				io.sockets.emit('instagram', chunk);
+				io.sockets.emit('instagram', chunk.toString());
 				res.end("Got instagram data and sent to all clients");
 			});
 		}
