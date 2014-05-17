@@ -5,6 +5,7 @@ var app = require('http').createServer(handler)
 var moment = require('moment');
 
 var url = require('url');
+var tagsearch = 'https://api.instagram.com/v1/tags/angelhacktest/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122';
 
 app.listen(8080);
 
@@ -36,10 +37,20 @@ function handler (req, res) {
 		{
 			console.log("Waiting for data to process the instagram post");
 			req.on('data', function (chunk) {
-				console.log('BODY: ' + chunk.toString());
+				//console.log('BODY: ' + chunk.toString());
 				console.log("Sending update to everyone");
-				io.sockets.emit('instagram', chunk.toString());
 				res.end("Got instagram data and sent to all clients");
+				request(tagsearch, function (error, response, body) {
+				  if (!error && response.statusCode == 200) {
+				  	instagram_past_search = body;
+				  	lastSearch = moment();
+				  	io.sockets.emit('instagram', body);  
+				  }
+				  else
+				  {
+				  	socket.emit('error-log', error);
+				  }
+				});
 			});
 		}
 		
@@ -59,7 +70,7 @@ io.sockets.on('connection', function (socket) {
 	if(!instagram_past_search || now.subtract('minutes', 30).isAfter(lastSearch))
 	{
 		console.log("New client... searching for existing photos");
-		request('https://api.instagram.com/v1/tags/angelhacktest/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122', function (error, response, body) {
+		request(tagsearch, function (error, response, body) {
 		  if (!error && response.statusCode == 200) {
 		  	instagram_past_search = body;
 		  	lastSearch = moment();
