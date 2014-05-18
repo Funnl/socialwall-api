@@ -2,6 +2,8 @@ var app = require('http').createServer(handler)
   , io = require('socket.io').listen(app)
   , fs = require('fs');
 
+var _ = require('lodash');
+
 var moment = require('moment');
 
 var url = require('url');
