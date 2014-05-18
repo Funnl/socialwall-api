@@ -23,9 +23,12 @@ var params = {
 
 stream.stream(params);
 
+var tweets = [];
+
 
 stream.on('data', function(json) {
 	console.log("Got twitter updates");
+	tweets.unshift(json);
 	io.sockets.emit('twitter', json);
 });
 
@@ -107,6 +110,10 @@ io.sockets.on('connection', function (socket) {
 		console.log("New client... using cache of existing photos");
 		socket.emit('instagram', instagram_past_search);
 	}
+
+	_.forEach(tweets, function(tweet){
+		socket.emit('twitter', tweet);
+	})
 
 	/*
   socket.on('my other event', function (data) {
