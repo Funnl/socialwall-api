@@ -30,8 +30,14 @@ var tweets = [];
 
 stream.on('data', function(json) {
 	console.log("Got twitter updates");
-	tweets.unshift(json);
-	io.sockets.emit('twitter', json);
+	if(json){
+		if(json.friends){
+
+		} else {
+			tweets.unshift(json); // add to beginning
+			io.sockets.emit('twitter', json);
+		}
+	}
 });
 
 function handler (req, res) {
