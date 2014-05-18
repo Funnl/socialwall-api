@@ -32,10 +32,14 @@ stream.on('data', function(json) {
 	console.log("Got twitter updates");
 	if(json){
 		if(json.friends){
-
-		} else {
+			console.log("Skipping twitter update about friends");
+		} else if(json.text) {
 			tweets.unshift(json); // add to beginning
 			io.sockets.emit('twitter', json);
+		}
+		else
+		{
+			console.log("Skipping twitter update about else condition");
 		}
 	}
 });
