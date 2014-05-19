@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 var moment = require('moment');
 
-var tag = "justatest";
+var tag = "angelhack";
 
 var url = require('url');
 var tagsearch = 'https://api.instagram.com/v1/tags/' + tag + '/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122';
