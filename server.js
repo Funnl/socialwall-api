@@ -6,12 +6,12 @@ var _ = require('lodash');
 
 var moment = require('moment');
 
-var tag = "angelhack";
+var tag = "justatest";
 
 var url = require('url');
 var tagsearch = 'https://api.instagram.com/v1/tags/' + tag + '/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122';
 
-app.listen(8080);
+app.listen(80);
 
 var Stream = require('user-stream');
 var stream = new Stream({
