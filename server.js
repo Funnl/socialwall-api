@@ -6,10 +6,11 @@ var _ = require('lodash');
 
 var moment = require('moment');
 
-var tag = "divshot";
+var tag = "sacto";
 
 var url = require('url');
 var tagsearch = 'https://api.instagram.com/v1/tags/' + tag + '/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122';
+var tweetsearch = ''
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port, function() {
@@ -110,6 +111,44 @@ io.sockets.on('connection', function (socket) {
 	if(!instagram_past_search || now.subtract('minutes', 30).isAfter(lastSearch))
 	{
 		console.log("New client... searching for existing photos");
+		request(tagsearch, function (error, response, body) {
+		  if (!error && response.statusCode == 200) {
+		  	instagram_past_search = body;
+		  	lastSearch = moment();
+			socket.emit('instagram', body);    
+		  }
+		  else
+		  {
+		  	socket.emit('error-log', error);
+		  }
+		});
+	}
+	else
+	{
+		console.log("New client... using cache of existing photos");
+		socket.emit('instagram', instagram_past_search);
+	}
+
+	_.forEach(tweets, function(tweet){
+		socket.emit('twitter', tweet);
+	})
+
+	/*
+  socket.on('my other event', function (data) {
+    //console.log(data);
+  });
+*/
+});
+
+var twitter_past_search = null;
+var lastSearch = moment().subtract('days', 1);
+
+io.sockets.on('connection', function (socket) {
+	console.log("Making Twitter search Request");
+	var now = moment();
+	if(!twitter_past_search || now.subtract('minutes', 30).isAfter(lastSearch))
+	{
+		console.log("New client... searching for existing tweets");
 		request(tagsearch, function (error, response, body) {
 		  if (!error && response.statusCode == 200) {
 		  	instagram_past_search = body;
