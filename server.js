@@ -313,9 +313,19 @@ function inboundInstagramHandler(req_url, req, res) {
 				// OK, so Instagram doesn't send enough information
 				// in the update messages, so we have to re-search
 
-				// TODO: Add in throttling
-
-				instagramSearch(true);
+				var now = moment();
+				if(!cache.lasts.instagramSearch)
+				{
+					instagramSearch(true);
+				} else {
+					if(cache.lasts.instagramSearch.add('minutes', 1).isBefore(now)){
+						instagramSearch(true);
+					}
+					else 
+					{
+						// Throttled
+					}
+				}
 				
 
 				// This is old code that assumed Instagram provided
