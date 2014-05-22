@@ -353,6 +353,15 @@ function instagramSearch(){
 var instagramCommandUrl = "https://api.instagram.com/v1/subscriptions/";
 
 function startInstagramStream(){
+	var instagramStreamForm = {
+		'client_id':'8344cc32e0464b3db83b13575741d9cb',
+		'client_secret':'d135ec98c4a04df7866e2a6201d7f356',
+		'object':'tag',
+		'aspect':'media',
+		'object_id': cache.settings.tag.toString(),
+		'callback_url':'http://whispering-everglades-6142.herokuapp.com/instagram'
+	};
+	//console.log(instagramStreamForm);
 	request.post(instagramCommandUrl, function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
 	  	console.log("Instagram stream enabled");
@@ -365,14 +374,7 @@ function startInstagramStream(){
 	  	console.log(error);
 	  	cache.statuses.instagram_stream = false;
 	  }
-	}).form({
-		'client_id':'8344cc32e0464b3db83b13575741d9cb',
-		'client_secret':'d135ec98c4a04df7866e2a6201d7f356',
-		'object':'tag',
-		'aspect':'media',
-		'object_id': + cache.settings.tag.toString(),
-		'callback_url':'http://whispering-everglades-6142.herokuapp.com/instagram'
-	});     
+	}).form(instagramStreamForm);     
 }
 
 function stopInstagramStream(){
