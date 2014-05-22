@@ -300,6 +300,7 @@ function handler (req, res) {
 function inboundInstagramHandler(req_url, req, res) {
 	if(req_url.query && req_url.query["hub.mode"])
 	{
+		console.log("Responding to instagram streaming challenge");
 		res.end(req_url.query["hub.challenge"]);
 	}
 	else
@@ -307,8 +308,8 @@ function inboundInstagramHandler(req_url, req, res) {
 		console.log("Waiting for data to process the instagram post");
 		req.on('data', function (chunk) {
 			try{
-				//console.log('BODY: ' + chunk.toString());
-				console.log("Sending update to everyone");
+				console.log('INSTAGRAM BODY: ' + chunk.toString());
+				
 				res.end("THANKS!");
 				var body = JSON.parse(chunk.toString());
 				if(body.data){
@@ -320,6 +321,7 @@ function inboundInstagramHandler(req_url, req, res) {
 					checkInstagramCache();
 				}
 				io.sockets.emit('instagram', body);
+				console.log("Sending update to everyone");
 			} catch (e){
 				console.log("err handling instagram inbound: " + e);
 			}
