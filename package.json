@@ -9,6 +9,8 @@
     "moment" : "2.4.x",
     "lodash": "2.2.x",
     "socket.io": "0.9.x",
-    "user-stream" : "0.0.x"
+    "user-stream" : "0.0.x",
+    "aws-sdk" : "2.0.0-rc.17",
+    "twitter": "0.2.9"
   }
 }

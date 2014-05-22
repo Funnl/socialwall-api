@@ -1,0 +1,44 @@
+<html>
+
+<body>
+<h1>SocialWall API Manager</h1>
+
+
+<form method="GET">
+<label>Old-school API Key
+<input type="text" name="api-key"/>
+</label>
+<h1>Switch to new event:</h1>
+<label>Tag
+<input type="text" name="tag-name"/>
+</label>
+<label>EventId (something safe for paths, e.g. angelhack61)
+<input type="text" name="event-id"/>
+</label>
+<input type="submit" name="command" value="set-event"/>
+<h1>See current settings</h1>
+<input type="submit" name="command" value="show-settings"/>
+<h1>Refresh settings from S3</h1>
+<input type="submit" name="command" value="refresh-settings"/>
+<h1>Prime Data</h1>
+<p>Resets the instagrams and tweets stored in memory and searches each service for past data</p>
+<input type="submit" name="command" value="prime-data"/>
+<h1>Start Streams</h1>
+<p>Start the realtime streaming</p>
+<input type="submit" name="command" value="start-streams"/>
+<h1>Stop Streams</h1>
+<input type="submit" name="command" value="stop-streams"/>
+<h1>Show Instagram Data</h1>
+<input type="submit" name="command" value="show-instagram"/>
+<h1>Show Twitter Data</h1>
+<input type="submit" name="command" value="show-twitter"/>
+<br/>
+<br/>
+<br/>
+<br/>
+<hr/>
+<h1>Reset Data</h1>
+<input type="submit" name="command" value="reset-data"/>
+</form>
+</body>
+</html>
