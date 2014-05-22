@@ -370,7 +370,7 @@ function startInstagramStream(){
 		'client_secret':'d135ec98c4a04df7866e2a6201d7f356',
 		'object':'tag',
 		'aspect':'media',
-		'object_id': + cache.settings.tag,
+		'object_id': + cache.settings.tag.toString(),
 		'callback_url':'http://whispering-everglades-6142.herokuapp.com/instagram'
 	});     
 }
