@@ -204,10 +204,10 @@ function mgrHandler(req_url, req, res){
 				twitterSearch();
 				res.end("Twitter-searched");
 			} else if ( command == "just-instagram-search" ) {
-				instagramSearch();
+				instagramSearch(false);
 				res.end("Twitter-searched");
 			} else if ( command == "prime-data" ) {
-				instagramSearch();
+				instagramSearch(false);
 				twitterSearch();
 				res.end("Data primed");
 			} else if ( command == "start-streams" ) {
@@ -308,8 +308,21 @@ function inboundInstagramHandler(req_url, req, res) {
 		console.log("Waiting for data to process the instagram post");
 		req.on('data', function (chunk) {
 			try{
-				console.log('INSTAGRAM BODY: ' + chunk.toString());
+				//console.log('INSTAGRAM BODY: ' + chunk.toString());
+				res.end("Got instagram data and sent to all clients");
+				// OK, so Instagram doesn't send enough information
+				// in the update messages, so we have to re-search
+
+				// TODO: Add in throttling
+
+				instagramSearch(true);
 				
+
+				// This is old code that assumed Instagram provided
+				// the data in the updates
+				// Instead, all it provides is a watermark:
+				// [{"changed_aspect": "media", "object": "tag", "object_id": "love", "time": 1400731745, "subscription_id": 4958586, "data": {}}]
+				/*
 				res.end("THANKS!");
 				var body = JSON.parse(chunk.toString());
 				if(body.data){
@@ -322,6 +335,7 @@ function inboundInstagramHandler(req_url, req, res) {
 				}
 				io.sockets.emit('instagram', body);
 				console.log("Sending update to everyone");
+				*/
 			} catch (e){
 				console.log("err handling instagram inbound: " + e);
 			}
@@ -329,7 +343,7 @@ function inboundInstagramHandler(req_url, req, res) {
 	}
 }
 
-function instagramSearch(){
+function instagramSearch(shouldUpdate){
 
 	var tagsearch = 'https://api.instagram.com/v1/tags/' + cache.settings.tag + '/media/recent?client_id=5b77c97181bf4089a71f7a44ce752122';
 
@@ -341,6 +355,10 @@ function instagramSearch(){
 	  		cache.counts.instagram = body.data.length || 0;
 	  	} else {
 	  		cache.counts.instagram = 0;
+	  	}
+
+	  	if(shouldUpdate){
+	  		io.sockets.emit('instagram', data_cache.instagram);
 	  	}
 	  }
 	  else
