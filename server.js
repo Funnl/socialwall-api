@@ -93,6 +93,9 @@ function handler (req, res) {
 				  }
 				});
 			});
+		} else if (utest == '/health')
+		{
+			res.end("Succesfully updated heroku")
 		}
 		
 	}
