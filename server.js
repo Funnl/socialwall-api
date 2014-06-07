@@ -22,7 +22,7 @@ var cache = {
 	instance_id : "mvp",
 	settings : {
 		// TODO: turn tag into an array
-		tag: "sactoadvantage",
+		tag: "angelhackbos",
 		eventId: "default-event",
 		startTime : moment()
 	},
@@ -31,8 +31,8 @@ var cache = {
 		twitterSearch: null,
 	},
 	statuses: {
-		twitter_stream : false,
-		instagram_stream: false
+		twitter_stream : true,
+		instagram_stream: true
 	},
 	counts : { // TODO: later
 		twitter: 0,
