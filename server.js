@@ -14,7 +14,7 @@ var AWS 			= require('aws-sdk');
 // These keys should be environment variables per the AWS docs, but this whole file is one big example
 // of what not to do... why stop there :)
 AWS.config 			= new AWS.Config({
-  accessKeyId: 'AKIAJOHT3NRZIGUIC3GA', secretAccessKey: 'Fnmz8KBqFjgMBeUekIJMbUKtrQcRdNp11BeXAbPm', region: 'us-west-2'
+  accessKeyId: '', secretAccessKey: '', region: 'us-west-2'
 });
 // Note: Twitter requires are defined closer to the consuming code
 
